@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Likes from "../Likes/Likes";
 import Card from "../UI/Card/Card";
@@ -13,6 +13,7 @@ const Replies = (props) => {
     const [replyNum, setReply] = useState('');
     const [replyEdit, setReplyEdit] = useState('')
 
+
     const replyHandler = (event) => {
         if (replyNum) {
             setReply('')
@@ -25,9 +26,20 @@ const Replies = (props) => {
         setReplyEdit(event.target.parentElement.getAttribute('id'));
     }
 
+    // SAVE REPLY DATA
+    const [replyData, setReplyData] = useState(props.replies);
+
+    const saveReplyDataHandler = (newReplyData) => {
+        setReplyData((previousData) => {
+            const result = [...previousData, newReplyData];
+            setReply('')
+            return result;
+        })
+    }
+
     return (
         <div className="reply">{
-            props.replies.map((reply) => (
+            replyData.map((reply) => (
                 <div>
                     <Card key={reply.id} className="comment">
                         <Likes score={reply.score}></Likes>
@@ -73,7 +85,7 @@ const Replies = (props) => {
                                 replyEdit === "edit-" + reply.id ?
                                     <div className="reply-content">
                                         <form className='edit--reply-form'>
-                                            <textarea cols="30" rows="10">{'@' + reply.replyingTo+ ' ' + reply.content}</textarea>
+                                            <textarea cols="30" rows="10">{reply.content}</textarea>
                                             <button type='submit' className='new--comment-send-btn'>update</button>
                                         </form>
                                     </div>
@@ -84,7 +96,16 @@ const Replies = (props) => {
                             }
                         </div>
                     </Card>
-                    {Number(replyNum) === reply.id ? <NewComment className='new-reply' btn="reply" text="reply" ></NewComment> : ''}
+                    {
+                        Number(replyNum) === reply.id ?
+                            <NewComment
+                                className='new-reply'
+                                btn="reply"
+                                text="reply"
+                                commenter={reply.user.username}
+                                onSaveReplyData={saveReplyDataHandler}>
+                            </NewComment> : ''
+                    }
                 </div>
             ))
         }
