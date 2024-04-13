@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from "../UI/Card/Card";
 import Likes from "../Likes/Likes";
 import Replies from '../Replies/Replies';
@@ -8,7 +8,7 @@ import NewComment from '../NewComment/NewComment'
 import './Comments.css'
 
 const Comments = (props) => {
-    
+
     const Data = props.data;
 
     const [reply, setReply] = useState('');
@@ -21,9 +21,28 @@ const Comments = (props) => {
         setReply(event.target.parentElement.getAttribute('id'))
     }
 
+    // SAVE REPLY DATA
+    const [replyData, setReplyData] = useState(Data.comments);
+    
+
+    const saveReplyDataHandler = (newReplyData) => {
+        console.log(newReplyData);
+        setReplyData((previousData) => {
+            const result = [];
+            previousData.forEach(comment => {
+                if (comment.user.username === newReplyData.replyingTo) {
+                    comment.replies.push(newReplyData);
+                }
+                result.push(comment);
+            })
+            setReply('')
+            return result;
+        })
+    }
+
     return (
         <div className="comments"> {
-            Data.comments.map((comment) => (
+            Data.comments.map((comment, index) => (
                 <div>
                     <Card key={comment.id} className="comment">
                         <Likes score={comment.score}></Likes>
@@ -49,8 +68,18 @@ const Comments = (props) => {
                             </div>
                         </div>
                     </Card>
-                    {(comment.replies.length ? <Replies replies={comment.replies}></Replies> : '')}
-                    {Number(reply) === comment.id ? <NewComment className="new-reply" btn="reply" text="reply" ></NewComment> : ''}
+                    {(comment.replies.length ? <Replies replies={replyData[index].replies}></Replies> : '')}
+                    {
+                        Number(reply) === comment.id ?
+                            <NewComment
+                                className="new-reply"
+                                btn="reply"
+                                text="reply"
+                                commenter={comment.user.username}
+                                onSaveReplyData={saveReplyDataHandler}>
+                            </NewComment>
+                            : ''
+                    }
 
                 </div>
             ))
