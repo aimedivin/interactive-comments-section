@@ -1,0 +1,8 @@
+.App {
+  width: 45rem;
+  margin-inline: auto;
+  margin-block: 4rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
