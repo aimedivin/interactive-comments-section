@@ -18,7 +18,6 @@ const NewComment = (props) => {
 
 
     const commentInputHandler = (event) => {
-        console.log(props.btn);
         setNewComment(event.target.value);
     }
 
@@ -28,7 +27,7 @@ const NewComment = (props) => {
         const convertedDate = setDate();
 
         const newData = {
-            "id": Math.random().toString(),
+            "id": Date.now(),
             "content": newComment,
             "createdAt": convertedDate,
             "score": 0,
