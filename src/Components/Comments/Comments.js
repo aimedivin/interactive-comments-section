@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Card from "../UI/Card/Card";
 import Likes from "../Likes/Likes";
 import Replies from '../Replies/Replies';
@@ -21,23 +21,35 @@ const Comments = (props) => {
         setReply(event.target.parentElement.getAttribute('id'))
     }
 
+
     // SAVE REPLY DATA
     const [replyData, setReplyData] = useState(Data.comments);
-    
+
 
     const saveReplyDataHandler = (newReplyData) => {
-        console.log(newReplyData);
         setReplyData((previousData) => {
             const result = [];
             previousData.forEach(comment => {
-                if (comment.user.username === newReplyData.replyingTo) {
+                let replyingToCheck = false;
+
+                comment.replies.forEach(reply => {
+                    if (reply.replyingTo === newReplyData.replyingTo)
+                        replyingToCheck = true
+                })
+
+                if (comment.user.username === newReplyData.replyingTo || replyingToCheck) {
                     comment.replies.push(newReplyData);
                 }
                 result.push(comment);
             })
-            setReply('')
+            setReply('');
             return result;
         })
+    }
+
+    //DELETE AND UPDATE REPLY
+    const updateDeleteReplyHandler = (actionCode, content) => {
+        props.updateDeleteReply(actionCode, content)
     }
 
     return (
@@ -68,7 +80,13 @@ const Comments = (props) => {
                             </div>
                         </div>
                     </Card>
-                    {(comment.replies.length ? <Replies replies={replyData[index].replies}></Replies> : '')}
+                    {comment.replies.length ?
+                        <Replies
+                            replies={replyData[index].replies}
+                            updateDeleteReply={updateDeleteReplyHandler}
+                            onSaveReplyData={saveReplyDataHandler}
+                        ></Replies>
+                        : ''}
                     {
                         Number(reply) === comment.id ?
                             <NewComment
@@ -80,7 +98,6 @@ const Comments = (props) => {
                             </NewComment>
                             : ''
                     }
-
                 </div>
             ))
         }

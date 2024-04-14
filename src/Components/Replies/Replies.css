@@ -31,9 +31,25 @@
     cursor: pointer;
 }
 
+.delete-reply:hover {
+    color: var(--pale-red);
+}
+
+.delete-reply:hover path {
+    fill: var(--pale-red);
+}
+
 .edit-reply {
     color: var(--moderate-blue);
     cursor: pointer;
+}
+
+.edit-reply:hover {
+    color: var(--light-grayish-blue);
+}
+
+.edit-reply:hover path {
+    fill: var(--light-grayish-blue);
 }
 
 .reply-content {
@@ -64,6 +80,7 @@
     outline: none;
     font-weight: 500;
     color: var(--dark-blue);
+    line-height: 1.2rem;
 }
 .edit--reply-form textarea:focus {
     border: 3px solid var(--moderate-blue);

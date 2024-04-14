@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import Likes from "../Likes/Likes";
 import Card from "../UI/Card/Card";
@@ -23,23 +23,31 @@ const Replies = (props) => {
     }
 
     const replyEditHandler = (event) => {
-        setReplyEdit(event.target.parentElement.getAttribute('id'));
+        setReplyEdit(event.currentTarget.getAttribute('id'));
     }
 
     // SAVE REPLY DATA
-    const [replyData, setReplyData] = useState(props.replies);
 
     const saveReplyDataHandler = (newReplyData) => {
-        setReplyData((previousData) => {
-            const result = [...previousData, newReplyData];
-            setReply('')
-            return result;
-        })
+        setReply('')
+        props.onSaveReplyData(newReplyData)
+    }
+
+    // DELETING A REPLY
+    const replyDeleteHandler = (event) => {
+        props.updateDeleteReply(event.currentTarget.getAttribute('id'), null)
+    }
+
+    // EDITING A REPLY
+    const replyUpdateFormHandler = (event) => {
+        event.preventDefault();
+        setReplyEdit('')
+        props.updateDeleteReply(event.currentTarget.getAttribute('id'), event.currentTarget.firstElementChild.value)
     }
 
     return (
         <div className="reply">{
-            replyData.map((reply) => (
+            props.replies.map((reply) => (
                 <div>
                     <Card key={reply.id} className="comment">
                         <Likes score={reply.score}></Likes>
@@ -58,17 +66,17 @@ const Replies = (props) => {
                                 {
                                     (reply.user.username === Data.currentUser.username ?
                                         <div className="reply-action">
-                                            <p className="delete-reply">
+                                            <p className="delete-reply" onClick={replyDeleteHandler} id={'delete-' + reply.id}>
                                                 <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z" fill="#ED6368" />
                                                 </svg>
                                                 <span>Delete</span>
                                             </p>
-                                            <p className="edit-reply" id={"edit-" + reply.id}>
+                                            <p className="edit-reply" id={"edit-" + reply.id} onClick={replyEditHandler}>
                                                 <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M13.479 2.872 11.08.474a1.75 1.75 0 0 0-2.327-.06L.879 8.287a1.75 1.75 0 0 0-.5 1.06l-.375 3.648a.875.875 0 0 0 .875.954h.078l3.65-.333c.399-.04.773-.216 1.058-.499l7.875-7.875a1.68 1.68 0 0 0-.061-2.371Zm-2.975 2.923L8.159 3.449 9.865 1.7l2.389 2.39-1.75 1.706Z" fill="#5357B6" />
                                                 </svg>
-                                                <span onClick={replyEditHandler}>Edit</span>
+                                                <span>Edit</span>
                                             </p>
                                         </div>
                                         :
@@ -84,7 +92,11 @@ const Replies = (props) => {
                             {
                                 replyEdit === "edit-" + reply.id ?
                                     <div className="reply-content">
-                                        <form className='edit--reply-form'>
+                                        <form
+                                            onSubmit={replyUpdateFormHandler}
+                                            className='edit--reply-form'
+                                            id={'update-' + reply.id}
+                                            required>
                                             <textarea cols="30" rows="10">{reply.content}</textarea>
                                             <button type='submit' className='new--comment-send-btn'>update</button>
                                         </form>
