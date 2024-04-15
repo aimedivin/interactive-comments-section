@@ -8,6 +8,7 @@
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 .delete-card {
@@ -56,4 +57,34 @@
 .delete--btn-approve {
     flex-basis: 50%;
     background-color: var(--soft-red);
+}
+
+@media only screen and (max-width: 576px) {
+
+    .delete-card {
+        width: 21rem;
+        padding: 1.5rem 2rem;
+    }
+
+    .delete-card h2 {
+        font-size: 1.1rem;
+    }
+
+    .delete-message {
+        font-size: .9rem;
+        margin-block: 1rem;
+        line-height: 1.4rem;
+    }
+
+    .delete-action {
+        display: flex;
+        column-gap: .8rem;
+    }
+
+    .delete--btn-approve,
+    .delete--btn-cancel {
+        font-size: .87rem;
+        padding-block: .7rem;
+    }
+
 }

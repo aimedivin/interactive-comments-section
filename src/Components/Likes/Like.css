@@ -4,5 +4,22 @@
     row-gap: 1.3rem;
     padding: 1rem;
     background-color: var(--very-light-gray);
-    border-radius: 5px;
+    border-radius: .5rem;
+}
+.like--score {
+    font-weight: 500;
+    color: var(--moderate-blue);
+}
+.like--plus,
+.like--minus {
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 576px) {
+    .like {
+        flex-direction: row;
+        column-gap: 1.1rem;
+        padding: .6rem .8rem;
+        align-items: center;
+    }
 }

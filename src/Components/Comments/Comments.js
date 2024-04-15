@@ -65,7 +65,7 @@ const Comments = (props) => {
                                     <figure>
                                         <img src={require(`../../${comment.user.image.png}`)} alt="" />
                                     </figure>
-                                    <p>{comment.user.username}</p>
+                                    <p className="comment--creator-name">{comment.user.username}</p>
                                     <p className='comment-date'>{comment.createdAt}</p>
                                 </div>
                                 <p className="comment-reply" onClick={replyHandler} id={comment.id}>
