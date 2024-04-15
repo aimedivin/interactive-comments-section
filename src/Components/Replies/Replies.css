@@ -1,5 +1,5 @@
 .reply {
-    border-left: 3px solid var(--light-grayish-blue);
+    border-left: 3px solid var(--light-gray);
     padding-left: 2rem;
     margin-left: 3rem;
     margin-top: 1rem;
@@ -11,6 +11,7 @@
 .reply-you {
     background-color: var(--moderate-blue);
     color: white;
+    font-weight: 500;
     padding: .1rem .4rem;
     font-size: .9rem;
     border-radius: 3px;
@@ -82,6 +83,26 @@
     color: var(--dark-blue);
     line-height: 1.2rem;
 }
+
 .edit--reply-form textarea:focus {
     border: 3px solid var(--moderate-blue);
+}
+
+@media only screen and (max-width: 576px) {
+    .reply {
+        padding-left: 1rem;
+        margin-left: 0;
+    }
+
+    .reply-action {
+        position: absolute;
+        bottom: 1.5rem;
+        right: 1rem;
+    }
+
+
+    .reply-content {
+        width: 18rem;
+    }
+
 }

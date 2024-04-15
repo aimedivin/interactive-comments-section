@@ -41,6 +41,10 @@
     width: 100%;
     height: 100%;
 }
+.comment--creator-name {
+    font-weight: 500;
+    color: var(--dark-blue);
+}
 
 .comment-date {
     color: var(--grayish-blue);
@@ -71,4 +75,26 @@
 
 .comment-reply:hover path {
     fill: var(--light-grayish-blue);
+}
+
+@media only screen and (max-width: 576px) {
+    .comment {
+        padding: 1rem;
+        align-items: flex-start;
+        flex-direction: column-reverse;
+        row-gap: 1rem;
+        position: relative;
+    }
+
+    .comment-content {
+        color: var(--grayish-blue);
+        line-height: 1.3rem;
+        width: 20rem;
+    }
+
+    .comment-reply {
+        position: absolute;
+        bottom: 1.5rem;
+        right: 1rem;
+    }
 }
